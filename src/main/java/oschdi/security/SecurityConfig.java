@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -66,9 +67,10 @@ public class SecurityConfig {
 
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        //List<String> allowOriginPatterns = Arrays.asList("*");
-        //configuration.setAllowedOriginPatterns(allowOriginPatterns);
-        configuration.setAllowedOrigins(Arrays.asList("http://rezepte.obrechtstudios.de", "http://obrechtstudios.de", "http://localhost:4200"));
+        // TODO change this back
+        List<String> allowOriginPatterns = Arrays.asList("*");
+        configuration.setAllowedOriginPatterns(allowOriginPatterns);
+        //configuration.setAllowedOrigins(Arrays.asList("http://rezepte.obrechtstudios.de", "http://obrechtstudios.de", "http://localhost:4200"));
         configuration.setAllowedMethods(singletonList("*"));
         configuration.setAllowedHeaders(singletonList("*"));
         //in case authentication is enabled this flag MUST be set, otherwise CORS requests will fail

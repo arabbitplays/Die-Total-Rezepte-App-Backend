@@ -1,6 +1,6 @@
 services:
-  dtra_frontend:
+  dtra_backend:
     build: .
-    image: dtra-frontend
+    image: dtra-backend
     ports:
       - 8081:8081
