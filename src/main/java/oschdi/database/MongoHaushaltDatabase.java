@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.ConnectionString;
+import com.mongodb.MongoException;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -30,11 +31,8 @@ public class MongoHaushaltDatabase implements HaushaltDatabase {
     @Override
     public void init() {
         mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-
-        MongoClient mongoClient = MongoClients.create(
-                MongoClientSettings.builder()
-                        .applyConnectionString(new ConnectionString("mongodb://mongodb:27017"))
-                        .build());
+ 
+        MongoClient mongoClient = connectToDatabase();
 
         String dbName = "dietotalerezepteapp";
         String[] collectionsToEnsure = {"rezepte", "items"};
@@ -59,6 +57,33 @@ public class MongoHaushaltDatabase implements HaushaltDatabase {
 
         recipeCollection = db.getCollection("rezepte");
         itemCollection = db.getCollection("items");
+    }
+
+    private MongoClient connectToDatabase() {
+        String mongoUser = System.getenv("MONGO_USER_USERNAME");
+        String mongoPassword = System.getenv("MONGO_USER_PASSWORD");
+
+        if (mongoUser == null || mongoPassword == null) {
+            throw new IllegalStateException("Mongo credentials are not the up in the environment variables!");
+        }
+        
+        String connectionString = String.format(
+                "mongodb://%s:%s@mongodb:27017/?authSource=dietotalerezepteapp",
+                mongoUser,
+                mongoPassword
+        );
+
+        MongoClientSettings settings = MongoClientSettings.builder()
+            .applyConnectionString(new ConnectionString(connectionString))
+            .build();
+
+        try {
+            MongoClient mongoClient = MongoClients.create(settings);
+            mongoClient.getDatabase("admin").runCommand(new org.bson.Document("ping", 1));
+            return mongoClient;
+        } catch (MongoException e) {
+            throw new RuntimeException("Failed to connect to MongoDB: " + e.getMessage());
+        }
     }
 
     @Override

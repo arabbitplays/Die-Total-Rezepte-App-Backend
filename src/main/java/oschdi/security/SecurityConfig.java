@@ -67,10 +67,9 @@ public class SecurityConfig {
 
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // TODO change this back
-        List<String> allowOriginPatterns = Arrays.asList("*");
-        configuration.setAllowedOriginPatterns(allowOriginPatterns);
-        //configuration.setAllowedOrigins(Arrays.asList("http://rezepte.obrechtstudios.de", "http://obrechtstudios.de", "http://localhost:4200"));
+        // List<String> allowOriginPatterns = Arrays.asList("*");
+        // configuration.setAllowedOriginPatterns(allowOriginPatterns);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://dtra-frontend:8080"));
         configuration.setAllowedMethods(singletonList("*"));
         configuration.setAllowedHeaders(singletonList("*"));
         //in case authentication is enabled this flag MUST be set, otherwise CORS requests will fail
