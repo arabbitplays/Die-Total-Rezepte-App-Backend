@@ -5,8 +5,8 @@ services:
     ports:
       - 8081:8081
     environment:
-      MONGO_USER_USERNAME: ${MONGO_USER_USERNAME}
-      MONGO_USER_PASSWORD: ${MONGO_USER_PASSWORD}
+      DTRA_USER_USERNAME: ${DTRA_USER_USERNAME}
+      DTRA_USER_PASSWORD: ${DTRA_USER_PASSWORD}
     depends_on:
       mongodb:
         condition: service_healthy
@@ -23,8 +23,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME} 
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD} 
-      MONGO_USER_USERNAME: ${MONGO_USER_USERNAME}
-      MONGO_USER_PASSWORD: ${MONGO_USER_PASSWORD}
+      MONGO_USER_USERNAME: ${DTRA_USER_USERNAME}
+      MONGO_USER_PASSWORD: ${DTRA_USER_PASSWORD}
     healthcheck:
       test: echo 'db.runCommand({find:"dietotalerezepteapp.${MONGO_USER_USERNAME}"}).ok' | mongosh --authenticationDatabase admin --host localhost -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} admin --quiet | grep -q 1
       interval: 10s

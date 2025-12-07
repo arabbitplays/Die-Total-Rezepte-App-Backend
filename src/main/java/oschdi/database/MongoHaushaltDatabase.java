@@ -60,8 +60,8 @@ public class MongoHaushaltDatabase implements HaushaltDatabase {
     }
 
     private MongoClient connectToDatabase() {
-        String mongoUser = System.getenv("MONGO_USER_USERNAME");
-        String mongoPassword = System.getenv("MONGO_USER_PASSWORD");
+        String mongoUser = System.getenv("DTRA_USER_USERNAME");
+        String mongoPassword = System.getenv("DTRA_USER_PASSWORD");
 
         if (mongoUser == null || mongoPassword == null) {
             throw new IllegalStateException("Mongo credentials are not the up in the environment variables!");
